@@ -1,3 +1,8 @@
 /venv
 /.idea
-/short_story_blog/
+/post/migrations
+users/migrations
+/short_story_blog/db.sqlite3
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
