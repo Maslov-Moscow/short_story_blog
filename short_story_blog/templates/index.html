@@ -1,7 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
- {% for a in a %}
-  {{ a }}
+ <div class="container">
+ {% for post in posts %}
+         <article>
+          <ul>
+            <li>
+              Автор: {{ post.author }}
+            </li>
+            <li>
+              Дата публикации: {{ post.pub_date|date:"d E Y" }}
+            </li>
+          </ul>
+          <p>
+            {{ post.text }}
+          </p>
+        </article>
+        <hr>
  {% endfor %}
+  </div>
 {% endblock %}
 
