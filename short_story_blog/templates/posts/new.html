@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Новый пост{% endblock %}
+{% block header %}{% endblock %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-8 p-5">
+    {%if post  %}
+        <h1>Редактировать пост</h1>
+    {%else%}
+        <h1>Создание нового поста </h1>
+    {%endif%}
+        <form method="post"
+          {%if post %} action="{% url 'posts:edit' post.id %}"
+          {%else%}  action="{% url 'posts:new' %}"
+          {%endif%}
+        >
+		{% csrf_token %}
+        <div class="form-group center">
+          {%for field in form%}
+            <div class="col-md-6">
+              <div class="form-group row">
+                {{ field }}
+              </div>
+            </div>
+          {%endfor%}
+		</form>
+          <div class="col-md-6 ">
+            <button type="submit" class="btn btn-primary">
+                Отправить
+            </button>
+          </div>
+        </div>
+    </div>
+  </div>
+{% endblock %}
