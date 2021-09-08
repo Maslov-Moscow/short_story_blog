@@ -1,4 +1,5 @@
 {% extends "base.html" %} {% block title %}{{ post.author.username }}{% endblock %} {% block content %}
+
 <main role="main" class="container">
   <div class="row">
     <div class="col-md-3 mb-3 mt-1">
@@ -12,6 +13,10 @@
     <div class="col-md-9">
       <div class="card mb-3 mt-1 shadow-sm">
         <div class="card-body">
+          {% load thumbnail %}
+          {% thumbnail post.image "500x500" crop="center" as im %}
+          <img src="{{ im.url }}" alt="sadasd" width="{{ im.width }}" height="{{ im.height }}">
+          {% endthumbnail %}
           <p class="card-text">
             <a href="{% url 'posts:profile' post.author %}"><strong class="d-block text-gray-dark">@{{ post.author.username }}</strong></a>
             <p>{{post.text}} </p>

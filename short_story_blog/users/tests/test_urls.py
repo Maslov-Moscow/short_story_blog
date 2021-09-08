@@ -24,6 +24,7 @@ class StaticURLTests(TestCase):
 
 class AuthTest(TestCase):
     """Проверка авторизации """
+
     def setUp(self):
         User = get_user_model()
         self.user = User.objects.create_user(username='test', password='12test12', email='test@test.com')
@@ -40,6 +41,7 @@ class AuthTest(TestCase):
 
 class LoginRequaredTest(TestCase):
     """Проверка доступа неавторизованных пользователей """
+
     def setUp(self):
         self.client = Client()
 

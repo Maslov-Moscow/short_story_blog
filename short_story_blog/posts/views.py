@@ -1,20 +1,22 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import PostForm
-from django.views.generic import CreateView, UpdateView, DetailView
-from django.urls import reverse_lazy
-from .models import Post, User
-from django.contrib.auth.decorators import login_required
+from django.views.generic import CreateView, UpdateView, DetailView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
-# from django.shortcuts import
 
-def index(requst):
-    posts = Post.objects.order_by('-pub_date')[:10]
-    context = {"posts": posts}
-    return render(requst, 'index.html', context)
+from .forms import PostForm
+from .models import Post, User
+
+
+class IndexListView(ListView):
+    """Стартовая страница"""
+    model = Post
+    paginate_by = 3
+    template_name = "index.html"
+    ordering = ['-pub_date']
 
 
 def profile(request, username):
+    """Страница профиля"""
     user = get_object_or_404(User, username=username)
     posts = Post.objects.filter(author=user)
     post_count = posts.count()
@@ -26,18 +28,17 @@ def profile(request, username):
     return render(request, 'posts/profile.html', context)
 
 
-def post_detail(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
-    context = {"post": post}
-    return render(request, 'posts/post_detail.html', context)
+#
+
 
 class PostDetailView(DetailView):
+    """Страница отдельного поста"""
     model = Post
     template_name = "posts/post_detail.html"
 
 
-
-class PostCreateView(LoginRequiredMixin,CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
+    """Страница создания поста"""
     form_class = PostForm
     template_name = 'posts/new.html'
     success_url = '/'
@@ -49,6 +50,7 @@ class PostCreateView(LoginRequiredMixin,CreateView):
 
 
 class EditPostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    """Страница редактирования поста"""
     model = Post
     template_name = 'posts/new.html'
     fields = ['text']
@@ -59,8 +61,14 @@ class EditPostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         raise PermissionDenied
 
-
-
     def get_success_url(self):
         pk = self.kwargs["pk"]
         return f'/posts/{pk}'
+
+
+def page_not_found(request, exception):
+    return render(request, "misc/404.html", {"path": request.path}, status=404)
+
+
+def server_error(request):
+    return render(request, "misc/500.html", status=500)

@@ -1,6 +1,8 @@
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
+
 from ..models import Post
+
 
 class PostPagesTest(TestCase):
 
@@ -17,5 +19,3 @@ class PostPagesTest(TestCase):
     def test_context(self):
         response = self.client.get("/posts/1/")
         self.assertEqual(response.context['object'].text, "Test text 123")
-
-
