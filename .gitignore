@@ -9,3 +9,4 @@ short_story_blog/users/migration
 short_story_blog/users/migrations
 short_story_blog/sent_emails
 short_story_blog/media
+short_story_blog/.env

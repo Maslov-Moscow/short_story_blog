@@ -5,12 +5,12 @@ from django.core.exceptions import PermissionDenied
 
 from .forms import PostForm
 from .models import Post, User
-
+from .servises import ActivatedMixin
 
 class IndexListView(ListView):
     """Стартовая страница"""
     model = Post
-    paginate_by = 3
+    paginate_by = 10
     template_name = "index.html"
     ordering = ['-pub_date']
 
@@ -37,7 +37,7 @@ class PostDetailView(DetailView):
     template_name = "posts/post_detail.html"
 
 
-class PostCreateView(LoginRequiredMixin, CreateView):
+class PostCreateView(LoginRequiredMixin,ActivatedMixin, CreateView):
     """Страница создания поста"""
     form_class = PostForm
     template_name = 'posts/new.html'
