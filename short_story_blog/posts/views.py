@@ -7,12 +7,15 @@ from .forms import PostForm
 from .models import Post, User
 from .servises import ActivatedMixin
 
+
+
 class IndexListView(ListView):
     """Стартовая страница"""
     model = Post
     paginate_by = 10
     template_name = "index.html"
     ordering = ['-pub_date']
+
 
 
 def profile(request, username):

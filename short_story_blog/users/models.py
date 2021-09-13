@@ -3,10 +3,13 @@ from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.mail import send_mail
-
+from django.conf import settings
 
 from .servises import gen_password
+from .tasks import send_verification_email
+
 User = get_user_model()
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
@@ -16,8 +19,8 @@ class Profile(models.Model):
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
+    """Созданик модели Profile и отправка кода подтверждения на почту"""
     if created:
         ver_code = gen_password()
-        send_mail('password',f'uoyr code {ver_code}', 'from@example.com',(instance.email,))
-
-        Profile.objects.create(user=instance,confirmed=False, code=ver_code)
+        send_verification_email.delay(instance.pk, ver_code)
+        Profile.objects.create(user=instance, confirmed=False, code=ver_code)
