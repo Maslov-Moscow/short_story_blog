@@ -38,3 +38,17 @@ services:
     depends_on:
       - web
     restart: "on-failure"
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  celery:
+      build: .
+      command: celery -A short_story_blog worker  --pool=solo --loglevel=info
+      volumes:
+        - .:/code
+      depends_on:
+        - db
+        - redis

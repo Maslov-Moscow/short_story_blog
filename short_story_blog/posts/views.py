@@ -8,14 +8,12 @@ from .models import Post, User
 from .servises import ActivatedMixin
 
 
-
 class IndexListView(ListView):
     """Стартовая страница"""
     model = Post
     paginate_by = 10
     template_name = "index.html"
     ordering = ['-pub_date']
-
 
 
 def profile(request, username):
@@ -40,7 +38,7 @@ class PostDetailView(DetailView):
     template_name = "posts/post_detail.html"
 
 
-class PostCreateView(LoginRequiredMixin,ActivatedMixin, CreateView):
+class PostCreateView(LoginRequiredMixin, ActivatedMixin, CreateView):
     """Страница создания поста"""
     form_class = PostForm
     template_name = 'posts/new.html'

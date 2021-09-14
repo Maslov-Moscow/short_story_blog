@@ -1,9 +1,8 @@
-from django.core.exceptions import PermissionDenied
-from django.urls import reverse_lazy
 from django.shortcuts import redirect
 
 
 class ActivatedMixin:
+    """Проверка что аккаунт активирован"""
     def has_permissions(self):
         return self.request.user.profile.confirmed == True
 
